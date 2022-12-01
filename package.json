@@ -1,0 +1,18 @@
+{
+  "name": "adventofcode-2021-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "load": "node setup_day.js",
+    "benchmark": "node benchmark.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "fs-extra": "^10.0.0",
+    "request": "^2.88.2"
+  }
+}
