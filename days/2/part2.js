@@ -22,8 +22,6 @@ const normalized = data.split('\n').map(e => {
     return [him, you, win, score];
 });
 
-console.log(normalized);
-
 const result = normalized.map(e => e[3]).reduce((a, b) => a + b, 0);
 
 console.log(result);
