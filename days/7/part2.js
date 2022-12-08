@@ -1,6 +1,7 @@
 let data = require('../../get_data')(7);
 
-const records = [{path: '/', isDir: true, size: 0}];
+const root = {path: '/', isDir: true, size: 0};
+const records = [root];
 const current = [];
 data.split('\n').forEach((line) => {
     const args = line.split(' ');
@@ -39,7 +40,7 @@ records.sort((a, b) => b.path.length - a.path.length).forEach((record) => {
     }
 });
 
-const currentSize = records.find(r => r.path === '/').size;
+const currentSize = root.size;
 const freeSpace = 70000000 - currentSize;
 const delta = 30000000 - freeSpace;
 
