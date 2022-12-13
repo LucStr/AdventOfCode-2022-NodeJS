@@ -40,6 +40,5 @@ for(let i = 0; i < 10000; i++){
     });
 }
 
-console.log(monkeys);
 const result = monkeys.sort((a, b) => b.inspectionCount - a.inspectionCount).slice(0, 2).reduce((a, b) => a.inspectionCount * b.inspectionCount)
 console.log(result);
