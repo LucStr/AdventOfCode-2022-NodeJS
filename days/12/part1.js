@@ -30,7 +30,7 @@ const map = data.split('\n').map((line, y) => {
 
 map.forEach(tile => {
     tile.neighbors = map.filter(other => {
-        return Math.abs(tile.x - other.x) + Math.abs(tile.y - other.y) === 1 && other.height - 1 <= tile.height;
+        return Math.abs(tile.x - other.x) + Math.abs(tile.y - other.y) === 1 && other.height - 1 <= tile.height - 1;
     });
 });
 
@@ -58,4 +58,4 @@ while(current = queue.shift()){
 }
 
 const result = current.tail.length;
-console.log(result);
+console.log(current, result);
