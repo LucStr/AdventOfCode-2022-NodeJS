@@ -40,22 +40,26 @@ Object.values(valves).forEach(valve => {
 
 const start = valves['AA'];
 const queue = [{minutes: 0, tail: [start], flow: 0, flowRate: 0}];
-const results = [];
 const MAX_TAIL_LENGTH = Object.values(valves).filter(valve => valve.name === 'AA' || valve.flowRate > 0).length;
-const MAX_MINUTES = 30;
+const MAX_MINUTES = 26;
+const map = new Map();
 while(queue.length){
     const {minutes, tail, flow, flowRate} = queue.shift();
     const current = tail[tail.length - 1];
+    const key = `${minutes},${current},${flow},${flowRate},${tail.sort()}`
+    if(map.has(key)){
+      continue;
+    }
 
     if(tail.length === MAX_TAIL_LENGTH || minutes === MAX_MINUTES){
-        results.push({tail, flow: flow + (MAX_MINUTES - minutes) * flowRate, flowRate, minutes});
-        continue;
+      map.set(key, {tail, lowerFlow: flow, flow: flow + (MAX_MINUTES - minutes) * flowRate, flowRate, minutes})
+      continue;
     }
 
     for(let destination of current.connections){
         if(tail.find(e => e.name === destination.name) || destination.distance + minutes > 30){
             if(destination.distance + minutes > 30){
-                results.push({tail, lowerFlow: flow, flow: flow + (MAX_MINUTES - minutes) * flowRate, flowRate, minutes});
+                map.set(key, {tail, lowerFlow: flow, flow: flow + (MAX_MINUTES - minutes) * flowRate, flowRate, minutes});
             }
             continue;
         }
@@ -67,6 +71,31 @@ while(queue.length){
     }
 }
 
+const results = [...map.values()];
 const result = results.sort((a, b) => b.flow - a.flow)[0];
-console.log(result);
-console.log(results.length)
+
+for(let r of results){
+    // Remove AA
+    r.tail.shift();
+}
+
+// I have absolutely no idea why this works, but it does. Might be a bias in the input data?
+let res = 0;
+main: for(let i = 0; i < results.length; i++){
+    const r1 = results[i];
+    for(let r2 of results){
+        if(r1 === r2){
+            continue;
+        }
+        if(r1.tail.some(e => r2.tail.find(e2 => e.name === e2.name))){
+            continue;
+        }
+
+        const flow = r1.flow + r2.flow;
+        if(flow > res){
+            res = flow;
+            break main;
+        }
+    }
+}
+console.log(res);
